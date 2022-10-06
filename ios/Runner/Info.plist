@@ -45,7 +45,12 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
-	<!-- TODO: Agrega permiso: NSLocationWhenInUseUsageDescription -->
-    <!-- TODO: Agrega permiso: NSLocationAlwaysUsageDescription -->
+	<!-- TO DO: Agrega permiso: NSLocationWhenInUseUsageDescription -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Esta aplicacion necesita usar la aubicacion cuando este abierta</string>
+    <!-- TO DO: Agrega permiso: NSLocationAlwaysUsageDescription -->
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Esta aplicacion necesita usar la aubicacion cuando este en segundo plano</string>
+	
 </dict>
 </plist>

@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:f_gps/ui/controllers/gps.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,7 +20,8 @@ class _LocationState extends State<LocationPage> {
   void initState() {
     super.initState();
     controller = Get.find();
-    // TODO: Asigna a _permissionStatus el futuro que obtiene el estado de los permisos.
+    // TO DO: Asigna a _permissionStatus el futuro que obtiene el estado de los permisos.
+    _permissionStatus = controller.permissionStatus;
   }
 
   @override
@@ -48,9 +51,15 @@ class _LocationState extends State<LocationPage> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        // TODO: 1. Obten la ubicacion actual con controller.currentLocation
-                        // TODO: 2. Obten la precision de la lectura con controller.locationAccuracy.
-                        // TODO: 3. Con setState actualiza controller.location y controller.accuracy
+                        // TO DO: 1. Obten la ubicacion actual con controller.currentLocation
+                        final location = await controller.currentLocation;
+                        // TO DO: 2. Obten la precision de la lectura con controller.locationAccuracy.
+                        final accuracy = await controller.locationAccuracy;
+                        // TO DO: 3. Con setState actualiza controller.location y controller.accuracy
+                        setState(() {
+                          controller.location = location;
+                          controller.accuracy = accuracy;
+                        });
                       },
                       child: const Text("Obtener Ubicacion"),
                     ),
@@ -62,31 +71,53 @@ class _LocationState extends State<LocationPage> {
               return Center(
                 child: ElevatedButton(
                     onPressed: () {
-                      // TODO: Actualiza el futuro _permissionStatus con requestPermission
-                      // TODO: y setState para que el FutureBuilder vuelva a renderizarse.
+                      // TO DO: Actualiza el futuro _permissionStatus con requestPermission
+                      setState(() {
+                        _permissionStatus = controller.requestPermission();
+                      });
+                      // TO DO: y setState para que el FutureBuilder vuelva a renderizarse.
                     },
                     child: const Text("Solicitar Permisos")),
               );
             } else {
-              // TODO: Muestra un texto cuando el usuario a denegado el permiso permanentemente
+              // TO DO: Muestra un texto cuando el usuario a denegado el permiso permanentemente
+              return const Center(
+                child: Text("Acceso a GPS denegado permanentemente"),
+              );
             }
           } else if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasError) {
-            // TODO: Muestra un texto con el error si ocurre.
+            // TO DO: Muestra un texto con el error si ocurre.
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+              ),
+            );
           } else {
-            // TODO: Mientras el futuro se completa muestra un CircularProgressIndicator
+            // TO DO: Mientras el futuro se completa muestra un CircularProgressIndicator
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),
     );
   }
 
-  String get _latitudeText => // TODO: Si controller.location no es null retorna la latitud
+// TO DO: Si controller.location no es null retorna la latitud
+  String get _latitudeText => controller.location != null
+      ? controller.location!.latitude.toString()
+      : "Desconocido";
   // de lo contratio retorna 'Desconocido'
 
-  String get _longitudeText => // TODO: Si controller.location no es null retorna la longitud
+// TO DO: Si controller.location no es null retorna la longitud
+  String get _longitudeText => controller.location != null
+      ? controller.location!.longitude.toString()
+      : "Desconocido";
   // de lo contratio retorna 'Desconocido'
 
-  String get _accuracyText => // TODO: Si controller.accuracy no es null retorna _locationAccuracy!.name
+// TO DO: Si controller.accuracy no es null retorna _locationAccuracy!.name
+  String get _accuracyText =>
+      controller.accuracy != null ? controller.accuracy!.name : "Desconocido";
   // de lo contratio retorna 'Desconocido'
 }
